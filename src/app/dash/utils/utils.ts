@@ -15,13 +15,9 @@ export class FormUtils {
 
         case 'minlength':
           return `Mínimo de ${errors['minlength'].requiredLength} caracteres.`;
-
-        case 'min':
-          return `Valor mínimo de ${errors['min'].min}`;
-
-        case 'max':
-          return `Valor Maximo de ${errors['max'].max}`;
-
+        
+        case 'maxlength':
+        return `Maximo de ${errors['maxlength'].requiredLength} caracteres.`;
        
         default:
           return `Error de validación no controlado ${key}`;
