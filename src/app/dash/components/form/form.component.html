@@ -1,1 +1,106 @@
-<p>form works!</p>,
+<form
+  class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-4xl mx-auto my-6 bg-base-200 p-5 rounded-xl shadow-md"
+  (submit)="onSubmit()"
+  >
+  <!-- [formGroup]="productForm" -->
+  <!-- Nombre del producto -->
+  <div class="sm:col-span-2">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Nombre del Producto</legend>
+      <input
+        type="text"
+        class="input w-full"
+        placeholder="Nombre del producto"
+        formControlName="nombre"
+      />
+      <!-- @if (formUtils.isValidField(productForm, 'nombre')) {
+        <span class="form-text text-error">
+          {{ formUtils.getFieldError(productForm, 'nombre') }}
+        </span>
+      } -->
+    </fieldset>
+  </div>
+
+  <!-- Descripción -->
+  <div class="sm:col-span-2">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Descripción</legend>
+      <textarea
+        class="textarea w-full"
+        placeholder="Descripción del producto"
+        formControlName="descripcion"
+        rows="3"
+      ></textarea>
+      <!-- @if (formUtils.isValidField(productForm, 'descripcion')) {
+        <span class="form-text text-error">
+          {{ formUtils.getFieldError(productForm, 'descripcion') }}
+        </span>
+      } -->
+    </fieldset>
+  </div>
+
+  <!-- Precio -->
+  <div>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Precio</legend>
+      <input
+        type="number"
+        min="0"
+        step="0.01"
+        class="input w-full"
+        placeholder="Precio del producto"
+        formControlName="precio"
+      />
+      <!-- @if (formUtils.isValidField(productForm, 'precio')) {
+        <span class="form-text text-error">
+          {{ formUtils.getFieldError(productForm, 'precio') }}
+        </span>
+      } -->
+    </fieldset>
+  </div>
+
+  <!-- Categoría -->
+  <div>
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Categoría</legend>
+      <input
+        type="text"
+        class="input w-full"
+        placeholder="Categoría"
+        formControlName="categoria"
+      />
+      <!-- @if (formUtils.isValidField(productForm, 'categoria')) {
+        <span class="form-text text-error">
+          {{ formUtils.getFieldError(productForm, 'categoria') }}
+        </span>
+      } -->
+    </fieldset>
+  </div>
+
+  <!-- Disponibilidad -->
+  <div class="sm:col-span-2">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Disponibilidad</legend>
+      <select
+        class="select w-full"
+        formControlName="disponibilidad"
+      >
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="Disponible">Disponible</option>
+        <option value="No disponible">No disponible</option>
+      </select>
+      <!-- @if (formUtils.isValidField(productForm, 'disponibilidad')) {
+        <span class="form-text text-error">
+          {{ formUtils.getFieldError(productForm, 'disponibilidad') }}
+        </span>
+      } -->
+    </fieldset>
+  </div>
+
+  <!-- Botón   productForm.invalid-->
+  <div class="col-span-1 sm:col-span-2 flex justify-end">
+    <button class="btn btn-primary w-full sm:w-auto" type="submit" [disabled]="">
+      Guardar Producto
+    </button>
+  </div>
+</form>

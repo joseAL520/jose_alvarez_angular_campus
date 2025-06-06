@@ -6,4 +6,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormComponent { }
+export class FormComponent {
+onSubmit() {
+throw new Error('Method not implemented.');
+}
+myForm: any;
+}
