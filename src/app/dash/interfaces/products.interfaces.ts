@@ -1,10 +1,10 @@
 export interface Product {
-  id: number;
+  id: string;
   name: string;
-  description?: string;
+  description: string;
   price: number;
-  category: Category;
-  available: boolean;
+  category: string;
+  available: string;
 }
 
 export enum Category {

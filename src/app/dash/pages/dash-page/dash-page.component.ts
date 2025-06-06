@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core';
 import { TableComponent } from "../../components/table/table.component";
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-dash-page',
@@ -7,4 +8,21 @@ import { TableComponent } from "../../components/table/table.component";
   templateUrl: './dash-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashPageComponent { }
+export class DashPageComponent {
+
+  productsServices = inject(ProductService)
+
+
+  getproducts(){
+    return this.productsServices.getProducts()
+  }
+
+  deleteProducts(id:any){
+    return this.productsServices.deleteProduct(id)
+  }
+
+  ngOnInit(): void {
+     this.getproducts()  
+  }
+
+}

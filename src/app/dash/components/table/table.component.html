@@ -30,16 +30,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-            <th>1</th>
-            <th>Pan</th>
-            <th>Electronico</th>
-            <th>20.000</th>
-            <th>Disponible</th>
-            <th><button class="btn btn-primary" [routerLink]="['/editer',1312]" routerLinkActive="router-link-active" >Editar</button></th>
-            <th><button class="btn btn-error" >Eliminar</button></th>
-        </tr>
-
+        @for (item of products(); track item.id; let index = $index) {
+          <tr>
+            <th>{{index + 1}}</th>
+            <th>{{item.name | titlecase }}</th>
+            <th>{{item.category }}</th>
+            <th>{{item.price | currency }}</th>
+            <th>{{item.available | availablePipe}}</th>
+            <th><button class="btn btn-primary" [routerLink]="['/editer',item.id]" routerLinkActive="router-link-active" >Editar</button></th>
+            <th><button class="btn btn-error"  (click)="sendIdProductos(item.id)">Eliminar</button></th>
+          </tr>
+        }
       </tbody>
     </table>
   </div>

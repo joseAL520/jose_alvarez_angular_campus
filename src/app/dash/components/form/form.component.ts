@@ -4,8 +4,9 @@ import { FormUtils } from '../../utils/utils';
 import { Category, Product } from '../../interfaces/products.interfaces';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { switchMap } from 'rxjs';
-
+import { ProductService } from '../../services/product.service';
+import { of, switchMap } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 
 @Component({
@@ -17,6 +18,8 @@ import { switchMap } from 'rxjs';
 export class FormComponent {
   private idGenel = '';
 
+  producServices = inject(ProductService)
+
   isActiveAlertSuccess = signal<boolean>(false)
   router = inject(Router)
   activateRouter= inject(ActivatedRoute)
@@ -27,28 +30,25 @@ export class FormComponent {
   formUtils= FormUtils; 
   formOutput = output<any>();
   myForm = this.fb.group({
+    id:[uuidv4()],
     name: ['',[Validators.required,Validators.minLength(10)]],
-    description: ['',[Validators.required,Validators.minLength(50),Validators.maxLength(100)]],
+    description: ['',[Validators.required,Validators.minLength(10),Validators.maxLength(100)]],
     price: [0, [Validators.required, Validators.min(0.01)]],
-    cate: ['',Validators.required],
+    category: ['',Validators.required],
     available: ['',Validators.required]
 });
 
   onSubmit() {
     this.myForm.markAllAsTouched();
     if(!this.myForm.valid)return
-
-    console.log(this.idGenel)
     if(this.idGenel) return this.updateClient()
-
-
-
-
+      
     const newClient = this.myForm.value
     this.messengerAlert()
     this.formOutput.emit(newClient)
     //{id: uuidv4()}
-    this.myForm.reset( )
+    this.router.navigateByUrl('/dashboard');
+    this.myForm.reset({id: uuidv4()})
   }
 
   messengerAlert(){
@@ -59,21 +59,28 @@ export class FormComponent {
   }
 
   updateClient(){
-    const client = this.myForm.value;
-    //this.serviceClient.updateClients(this.idGenel, client).subscribe();
+    const formValue = this.myForm.value;
+    const updatedProduct: Product = {
+      id: this.idGenel,
+      name: formValue.name!,
+      description: formValue.description ?? '',
+      price: formValue.price!,
+      category: formValue.category as Category, 
+      available: formValue.available!
+    };
+    this.producServices.updateProduct(updatedProduct)
     this.router.navigateByUrl('/dashboard');
-    console.log('update')
   }
 
-  
   ngOnInit(): void {
-    if(!this.router.url.includes('/')) return
+    if(!this.router.url.includes('/editer')) return
   
     this.activateRouter.params.pipe(
-      switchMap(params  => {
+      switchMap((params)  => {
            const id = params['id'];
-            //return this.serviceClient.getClientsIdBy(id);
-          return this.idGenel = id ;
+           this.idGenel = id ;
+          const produts = this.producServices.getProductsById(id);
+           return  of(produts)
       })
     ).subscribe(
       prod => {
@@ -82,16 +89,15 @@ export class FormComponent {
             return;
          }
         this.myForm.patchValue({
-          name: 'asdasdasdasd',
-          description: 'adsasdasdadsasdasdadsasdasdadsasdasdadsasdasdadsasdasdadsasdasd',
-          price: 10000,
-          cate: 'hogar',
-          available: 'disponible',
+          name: prod.name,
+          description: prod.description,
+          price: prod.price,
+          category: prod.category,
+          available: prod.available,
         })
       }
     );
 
-  }
+ }
+
 }
-
-

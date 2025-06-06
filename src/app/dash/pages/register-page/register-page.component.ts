@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormComponent } from "../../components/form/form.component";
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-register-page',
@@ -7,4 +8,12 @@ import { FormComponent } from "../../components/form/form.component";
   templateUrl: './register-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RegisterPageComponent { }
+export class RegisterPageComponent { 
+
+  productServices = inject(ProductService)
+
+  formPost($event: any) {
+    this.productServices.PostProducts($event)
+  }
+
+}

@@ -65,14 +65,14 @@
       <legend class="fieldset-legend">Categoria</legend>
       <select
         class="select w-full"
-        formControlName="cate"
+        formControlName="category"
       >
         <option value="" disabled selected>Selecciona una opción</option>
           <option *ngFor="let cat of categori" [value]="cat">{{ cat }}</option>
       </select>
-      @if (formUtils.isValidField(myForm, 'cate')) {
+      @if (formUtils.isValidField(myForm, 'category')) {
         <span class="form-text text-error">
-          {{ formUtils.getFieldError(myForm, 'cate') }}
+          {{ formUtils.getFieldError(myForm, 'category') }}
         </span>
       }
     </fieldset>
@@ -87,8 +87,8 @@
         formControlName="available"
       >
         <option value="" disabled selected>Selecciona una opción</option>
-        <option [value]="'Disponible'">Disponible</option>
-        <option [value]="'No disponible'">No disponible</option>
+        <option [value]=" true ">Disponible</option>
+        <option [value]=" false ">No disponible</option>
       </select>
       @if (formUtils.isValidField(myForm, 'available')) {
         <span class="form-text text-error">
