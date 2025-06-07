@@ -79,7 +79,7 @@ export class FormComponent {
       switchMap((params)  => {
            const id = params['id'];
            this.idGenel = id ;
-          const produts = this.producServices.getProductsById(id);
+          const produts = this.producServices.getProductById(id);
            return  of(produts)
       })
     ).subscribe(

@@ -13,7 +13,7 @@ export class RegisterPageComponent {
   productServices = inject(ProductService)
 
   formPost($event: any) {
-    this.productServices.PostProducts($event)
+    this.productServices.postProduct($event)
   }
 
 }

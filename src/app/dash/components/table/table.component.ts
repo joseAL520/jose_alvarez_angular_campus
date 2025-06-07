@@ -11,10 +11,13 @@ import { AvailablePipePipe } from '../../pipe/available-pipe.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent {
+
   
   products = input<Product[]>()
   idProducts = output<string>()
-
+  
+  idProductoDelete: string | null = null;
+  
   categoriaSeleccionada = signal<string>('');
   categorias= Object.values(Category)
 
@@ -25,8 +28,23 @@ export class TableComponent {
   }
 
 
-  sendIdProductos(id:string){
-    this.idProducts.emit(id)
+  openModal(id: string) {
+    this.idProductoDelete = id;
+    const modal = document.getElementById('my_modal_Delete') as HTMLDialogElement;
+    if (modal) {
+      modal.showModal();
+    }
   }
+
+
+  sendIdProductos(id: string | null) {
+  if (id !== null) {
+      this.idProducts.emit(id)
+      const modal = document.getElementById('my_modal_Delete') as HTMLDialogElement;
+      if (modal) {
+        modal.close();
+      }
+    }
+  } 
 
 }

@@ -6,7 +6,7 @@
       [value]="categoriaSeleccionada()"
       (change)="categoriaSeleccionada.set($any($event.target).value)"
     >
-      <option value="">Todas las categorías</option>
+      <option value="">Todos</option>
       @for (item of categorias; track $index) {
         <option [value]="item">{{ item }}</option>
       }
@@ -35,36 +35,64 @@
         </tr>
       </thead>
       <tbody>
-        @if (!productsFiltrados) {
-          @for (item of products(); track item.id; let index = $index) {
-              <tr>
+        
+        @if(!products()?.length || !productsFiltrados?.length ){
+          <div role="alert" class="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="h-6 w-full shrink-0 stroke-current">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>no hay productos Disponibles</span>
+          </div>
+        }@else if(productsFiltrados){
+          @for (item of productsFiltrados; track item.id; let index = $index) {
+            <tr>
                 <th>{{index + 1}}</th>
                 <th>{{item.name | titlecase }}</th>
                 <th>{{item.category }}</th>
                 <th>{{item.price | currency }}</th>
                 <th>{{item.available | availablePipe}}</th>
                 <th><button class="btn btn-primary" [routerLink]="['/editer',item.id]" routerLinkActive="router-link-active" >Editar</button></th>
-                <th><button class="btn btn-error"  (click)="sendIdProductos(item.id)">Eliminar</button></th>
+                <th>
+                    <button class="btn btn-error" (click)="openModal(item.id)">Eliminar</button>
+                </th>
             </tr>
           }
-        }@else  {
-         
-          @for (item of productsFiltrados; track item.id; let index = $index) {
-              <tr>
+        } @else {
+           @for (item of products(); track item.id; let index = $index) {
+            <tr>
                 <th>{{index + 1}}</th>
                 <th>{{item.name | titlecase }}</th>
                 <th>{{item.category }}</th>
                 <th>{{item.price | currency }}</th>
                 <th>{{item.available | availablePipe}}</th>
                 <th><button class="btn btn-primary" [routerLink]="['/editer',item.id]" routerLinkActive="router-link-active" >Editar</button></th>
-                <th><button class="btn btn-error"  (click)="sendIdProductos(item.id)">Eliminar</button></th>
+                <th>
+                    <button class="btn btn-error" (click)="openModal(item.id)">Eliminar</button>
+                </th>
             </tr>
           }
         }
-
-        
       </tbody>
     </table>
   </div>
 
 </div>
+
+
+<dialog id="my_modal_Delete" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box">
+    <div role="alert" class="alert alert-warning">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+      <span>¿Estás seguro de eliminar este producto?</span>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-success mr-2.5" (click)="sendIdProductos(idProductoDelete)">Eliminar</button>
+        <button class="btn btn-error">Cancelar</button>
+      </form>
+    </div>
+  </div>
+</dialog>
