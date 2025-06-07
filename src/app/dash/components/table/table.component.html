@@ -1,12 +1,18 @@
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-200 m-4 sm:m-6 flex flex-col">
   
   <div class="flex flex-col md:flex-row items-center  gap-2 md:gap-4">
-    <input
-      type="text"
-      placeholder="Buscar... "
-      class="input input-sm md:input-md w-52 md:max-w-xs m-1"
-    />
-    <div class="tooltip tooltip-bottom md:self-center" data-tip="Puedes buscar por nombre o número de identificación.">
+    <select 
+      class="select select-sm md:select-md w-52 m-1"  
+      [value]="categoriaSeleccionada()"
+      (change)="categoriaSeleccionada.set($any($event.target).value)"
+    >
+      <option value="">Todas las categorías</option>
+      @for (item of categorias; track $index) {
+        <option [value]="item">{{ item }}</option>
+      }
+    </select>
+
+     <div class="tooltip tooltip-bottom md:self-center" data-tip="Puedes buscar por Categorias.">
       <svg xmlns="http://www.w3.org/2000/svg" class="text-gray-500" width="20" height="20" viewBox="0 0 16 16">
         <g fill="currentColor">
           <path d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0M7.5 4A2.5 2.5 0 0 0 5 6.5h2a.5.5 0 0 1 .5-.5h.646a.382.382 0 0 1 .17.724L7 7.382V9h2v-.382l.211-.106A2.382 2.382 0 0 0 8.146 4z"/>
@@ -16,7 +22,6 @@
     </div>
   </div>
  
-
   <div class="w-full overflow-x-auto">
     <table class="table table-zebra">
       <!-- head -->
@@ -30,18 +35,36 @@
         </tr>
       </thead>
       <tbody>
-        @for (item of products(); track item.id; let index = $index) {
-          <tr>
-            <th>{{index + 1}}</th>
-            <th>{{item.name | titlecase }}</th>
-            <th>{{item.category }}</th>
-            <th>{{item.price | currency }}</th>
-            <th>{{item.available | availablePipe}}</th>
-            <th><button class="btn btn-primary" [routerLink]="['/editer',item.id]" routerLinkActive="router-link-active" >Editar</button></th>
-            <th><button class="btn btn-error"  (click)="sendIdProductos(item.id)">Eliminar</button></th>
-          </tr>
+        @if (!productsFiltrados) {
+          @for (item of products(); track item.id; let index = $index) {
+              <tr>
+                <th>{{index + 1}}</th>
+                <th>{{item.name | titlecase }}</th>
+                <th>{{item.category }}</th>
+                <th>{{item.price | currency }}</th>
+                <th>{{item.available | availablePipe}}</th>
+                <th><button class="btn btn-primary" [routerLink]="['/editer',item.id]" routerLinkActive="router-link-active" >Editar</button></th>
+                <th><button class="btn btn-error"  (click)="sendIdProductos(item.id)">Eliminar</button></th>
+            </tr>
+          }
+        }@else  {
+         
+          @for (item of productsFiltrados; track item.id; let index = $index) {
+              <tr>
+                <th>{{index + 1}}</th>
+                <th>{{item.name | titlecase }}</th>
+                <th>{{item.category }}</th>
+                <th>{{item.price | currency }}</th>
+                <th>{{item.available | availablePipe}}</th>
+                <th><button class="btn btn-primary" [routerLink]="['/editer',item.id]" routerLinkActive="router-link-active" >Editar</button></th>
+                <th><button class="btn btn-error"  (click)="sendIdProductos(item.id)">Eliminar</button></th>
+            </tr>
+          }
         }
+
+        
       </tbody>
     </table>
   </div>
+
 </div>
