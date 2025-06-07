@@ -1,6 +1,7 @@
 <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-200 m-4 sm:m-6 flex flex-col">
 
-  <div class="flex flex-col md:flex-row items-center justify-between gap-2 p-4">
+  <!-- Filtros -->
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4 p-4 w-full flex-wrap">
     <div class="flex items-center gap-2">
       <select 
         class="select select-sm md:select-md w-52"  
@@ -24,8 +25,9 @@
     </div>
   </div>
 
+
   <div class="w-full overflow-x-auto">
-    <table class="table table-zebra text-sm sm:text-base">
+    <table class="table table-zebra text-sm sm:text-base min-w-full">
       <thead>
         <tr>
           <th>#</th>
@@ -58,7 +60,10 @@
               <td>{{ item.price | currency }}</td>
               <td>{{ item.available | availablePipe }}</td>
               <td>
-                <button class="btn btn-primary btn-sm" [routerLink]="['/editer', item.id]" routerLinkActive="router-link-active">Editar</button>
+                <button class="btn btn-info btn-sm" (click)="openInfoModal(item)">Más</button>
+              </td>
+              <td>
+                <button class="btn btn-primary btn-sm" [routerLink]="['/editer', item.id]">Editar</button>
               </td>
               <td>
                 <button class="btn btn-error btn-sm" (click)="openModal(item.id)">Eliminar</button>
@@ -74,7 +79,7 @@
               <td>{{ item.price | currency }}</td>
               <td>{{ item.available | availablePipe }}</td>
               <td>
-                <button class="btn btn-primary btn-sm" [routerLink]="['/editer', item.id]" routerLinkActive="router-link-active">Editar</button>
+                <button class="btn btn-primary btn-sm" [routerLink]="['/editer', item.id]">Editar</button>
               </td>
               <td>
                 <button class="btn btn-error btn-sm" (click)="openModal(item.id)">Eliminar</button>
@@ -87,7 +92,8 @@
   </div>
 </div>
 
-<dialog id="my_modal_Delete" class="modal modal-bottom sm:modal-middle">
+
+<dialog id="my_modal_Delete" class="modal modal-middle">
   <div class="modal-box">
     <div role="alert" class="alert alert-warning">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
@@ -104,3 +110,56 @@
     </div>
   </div>
 </dialog>
+
+
+<dialog id="modal_info_producto" class="modal modal-middle">
+  <div class="modal-box w-full max-w-md">
+    <h3 class="font-bold text-xl text-center mb-6 ">🛍️ Detalles del Producto</h3>
+
+    <div class="grid grid-cols-2 grid-rows-4 gap-x-4 gap-y-3 text-sm text-base-content">
+      <!-- Nombre -->
+      <div class="col-span-2">
+        <span class="font-semibold ">📦 Nombre:</span>
+        <p class="capitalize text-lg font-medium text-primary mt-1">{{ productInfo?.name }}</p>
+      </div>
+
+      <!-- Categoría -->
+      <div class="row-start-2">
+        <span class="font-semibold">📁 Categoría:</span>
+        <p class="mt-1">
+          <span class="badge badge-outline badge-sm text-xs">{{ productInfo?.category }}</span>
+        </p>
+      </div>
+
+      <!-- Precio -->
+      <div class="row-start-3">
+        <span class="font-semibold">💰 Precio:</span>
+        <p class="text-success font-semibold mt-1">{{ productInfo?.price | currency }}</p>
+      </div>
+
+      <!-- Estado -->
+      <div class="row-start-3">
+        <span class="font-semibol">🔄 Estado:</span>
+        <p class="mt-1">
+       
+            {{ productInfo?.available | availablePipe }}
+  
+        </p>
+      </div>
+
+      <!-- Descripción -->
+      <div class="col-span-2 row-start-4">
+        <hr class="my-2">
+        <span class="font-semibold block mb-1">📝 Descripción:</span>
+        <p class="text-justify leading-snug text-gray-700">{{ productInfo?.description || 'No disponible' }}</p>
+      </div>
+    </div>
+
+    <div class="modal-action mt-6">
+      <form method="dialog">
+        <button class="btn btn-outline btn-sm">Cerrar</button>
+      </form>
+    </div>
+  </div>
+</dialog>
+

@@ -17,7 +17,8 @@ export class TableComponent {
   idProducts = output<string>()
   
   idProductoDelete: string | null = null;
-  
+  productInfo: any = null;
+
   categoriaSeleccionada = signal<string>('');
   categorias= Object.values(Category)
 
@@ -32,6 +33,14 @@ export class TableComponent {
     this.idProductoDelete = id;
     const modal = document.getElementById('my_modal_Delete') as HTMLDialogElement;
     if (modal) {
+      modal.showModal();
+    }
+  }
+
+  openInfoModal(product: any) {
+    this.productInfo = product;
+    const modal: any = document.getElementById('modal_info_producto');
+    if (modal?.showModal) {
       modal.showModal();
     }
   }
